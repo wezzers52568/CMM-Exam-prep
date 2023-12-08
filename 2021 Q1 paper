@@ -1,0 +1,28 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Fri Dec  8 14:03:34 2023
+
+@author: s2204344
+"""
+import sympy as sym
+import numpy as np
+
+#Q1a
+a = 12
+b=1500
+
+p = [1, 2*a, 3*b, a*b, b**2]
+roots = np.roots(p)
+
+print(roots)
+
+omega_r = np.real(roots)
+omega_j = np.imag(roots)
+
+print()
+print('omega_r is', np.unique(omega_r))
+print()
+print('omega_j is', omega_j[omega_j < 0])
+
+#Q1b
+
