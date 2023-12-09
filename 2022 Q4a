@@ -1,0 +1,27 @@
+#This code takes a while to run
+
+import sympy as sym
+
+x, dx, d2x, m, b, k, A0, t, phi, w, w0 = sym.symbols('x dx d2x m b k A0 t phi w w0')
+
+#Defining w and k in terms of m, b and w0
+w = sym.sqrt(w0**2 - (b/(2*m))**2)
+k = w0**2 * m
+
+#Using Equation 4.2 to get the first and second derivatives
+x = A0*sym.exp(-t*(b/(2*m)))*sym.cos(w*t + phi)
+dx = sym.diff(x, t)
+d2x_eq42 = sym.diff(dx, t)
+
+#print(sym.solve(d2x_eq42, t))
+
+#Rearranging Equation 4.1 to make the second derivative the subject
+d2x_eq41 = (-(b*dx) - k*x)/m
+
+#print(sym.solve(d2x_eq41, t))
+
+#Checking if the solutions are the same
+if sym.solve(d2x_eq42, t) == sym.solve(d2x_eq41, t):
+    print('Equation 4.2 is the general solution')
+else:
+    print('Equation 4.2 is not the general solution')
