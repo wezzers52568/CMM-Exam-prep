@@ -1,0 +1,33 @@
+import numpy as np
+
+#Function function
+def func(t): 
+    return u*np.log(m0/(m0 - q*t)) 
+  
+#This function is just Simpson's 1/3rd rule
+def simps(a,b,N=1000):
+    
+    if N % 2 == 1:
+        raise ValueError("N must be an even integer.")
+    dx = (b-a)/N
+    x = np.linspace(a,b,N+1)
+    y = func(x)
+    S = dx/3 * np.sum(y[0:-1:2] + 4*y[1::2] + y[2::2])
+    print(S)
+    return S
+  
+#Defining constants
+u = 1.8E3
+m0 = 160E3
+q = 2.5E3    
+
+#Driver function 
+interval_limit = 1000
+lower_limit = 0
+upper_limit = 30
+  
+#Integrating
+integral_res = simps(lower_limit, upper_limit, interval_limit) 
+  
+#Rounding the final answer to 6 decimal places  
+print('The distance after 30s is',round(integral_res, 6),'m') 
