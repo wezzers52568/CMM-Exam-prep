@@ -1,0 +1,36 @@
+import sympy as sym
+import numpy as np
+import matplotlib.pyplot as plt
+
+#Defining variables
+R, theta, C, e, alpha = sym.symbols('R theta C e alpha')
+
+#Defining simultaneous equations by subbing in values from the table
+eq1 = sym.Eq(6870, C/(1 + e*sym.sin(sym.rad(-30) + alpha)))
+eq2 = sym.Eq(6728, C/(1 + e*sym.sin(sym.rad(0) + alpha)))
+eq3 = sym.Eq(6615, C/(1 + e*sym.sin(sym.rad(30) + alpha)))
+
+#Solving equations numerically
+#(guess for e is the orbit eccentricity of the earth)
+result = sym.nsolve([eq1, eq2, eq3], (C, e, alpha), [6800, 0.017, 0])
+C = result[0]
+e = result[1]
+alpha = result[2]
+
+#Equation 5
+R = C/(1 + e*sym.sin(theta + alpha))
+
+#Getting R values for full orbit
+N = 3000
+theta_range = np.linspace(-np.pi,np.pi,N)
+R_range = np.zeros(N)
+for i in range(N):
+    R_range[i] = R.subs(theta,theta_range[i])
+
+#Plotting
+plt.plot(theta_range, R_range)
+plt.show()
+
+#Getting minimum R value
+R_min = min(R_range)
+print('The minimum R value is', R_min)
