@@ -32,10 +32,13 @@ phi_j = np.pi/8
 omega_j_2 = np.min(abs(omega_j))
 omega_r_2 = -np.min(abs(omega_r))
 
+k = 1000
+
+def displ(t): 
+    return (A_j*np.exp(omega_r_2*t)*np.cos(omega_j_2*t+phi_j))
 
 def func(t): 
-      
-    return abs(A_j*np.exp(omega_r_2*t)*np.cos(omega_j_2*t+phi_j))
+    return -k * displ(t)
 
 def calculate(lower_limit, upper_limit, interval_limit ): 
       
@@ -53,7 +56,7 @@ def calculate(lower_limit, upper_limit, interval_limit ):
 
 
 integral = calculate(0, 10, 3000)
-work = integral * 100
+work = integral
 print()
 print('work done', work)
 
