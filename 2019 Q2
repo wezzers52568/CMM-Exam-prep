@@ -1,0 +1,44 @@
+import sympy as sym
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.optimize import fsolve
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#PART A
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+#Defining variables
+x, p = sym.symbols('x p')
+
+#Defining equation and its integral
+Eq3 = sym.sin(x)*sym.cos(p*x)
+Eq3_int = sym.integrate(Eq3, (x, 0, sym.pi))
+
+N=500
+p_val = np.linspace(-20,20,N)
+int_val = np.zeros(N)
+
+#Filling all integral values
+for i in range(N):
+    int_val[i] = Eq3_int.subs(p,p_val[i])
+
+#Plotting
+plt.plot(p_val, int_val)
+plt.show()
+
+
+min_int = min(int_val) #minimum integral value
+min_index = np.where(int_val == min_int) #index of minimum integral value
+min_p = abs(p_val[min_index])#Absolute value is used as cos is symmetrical, so the sign of p doesn't matter
+print('The value of p that minimises the integral is', min_p)
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#PART B
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#This can just be done on desmos
+Eq3 = lambda x: np.sin(x)*np.cos(min_p*x)
+x1 = fsolve(Eq3, 0.1)
+x2 = fsolve(Eq3, 1)
+x3 = fsolve(Eq3, 2)
+
+print(x1, x2, x3)
