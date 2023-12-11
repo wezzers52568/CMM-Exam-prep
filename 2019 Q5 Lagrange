@@ -1,0 +1,49 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Sat Nov  7 12:25:44 2020
+
+@author: emc1977
+"""
+
+import numpy as np
+from scipy.optimize import minimize
+import sympy as sym
+
+
+l1 = 1.2
+l2 = 1.5
+l3= 1
+B = 3.5
+H = 0
+w1 = 20e3
+w2 = 30e3
+
+
+# This s the objective function without any constraints inserted yet.
+# Function F below combines this objective function with the constraint in eq just below
+# to form an Augmented Lagrange Function.
+def objective(X):
+    theta1, theta2, theta3 = X
+    return -w1 * l1* np.sin(theta1) - w2 * (l1 * np.sin(theta1) + l2 * np.sin(theta2))
+
+#This is the constraint function that has lambda as a coefficient.
+def eq1(X):
+    theta1, theta2, theta3 = X
+    return l1 * np.cos(theta1) + l2 * np.cos(theta2) + l3 * np.cos(theta3) - B
+
+def eq2(X):
+    theta1, theta2, theta3 = X
+    return l1 * np.sin(theta1) + l2 * np.sin(theta2) + l3 * np.sin(theta3) - H
+
+bnds = ((0, np.pi), (0,np.pi), (0, np.pi))
+
+sol = minimize(objective, [0.001, 0.001, 0.001], bounds= bnds, constraints=[{'type': 'eq', 'fun': eq1}, {'type': 'eq', 'fun': eq2}])
+sol = (sol.x)
+theta1 = sol[0]
+theta2 = sol[1]
+theta3 = sol[2]
+
+print(sol)
+H = l1 * np.sin(theta1) + l2 * np.sin(theta2) + l3 * np.sin(theta3)
+B = l1 * np.cos(theta1) + l2 * np.cos(theta2) + l3 * np.cos(theta3)
+print(H, B)
