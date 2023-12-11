@@ -1,0 +1,36 @@
+import sympy as sp
+
+def taylor_series(func, var, point, n):
+    """
+    Calculate the Taylor series expansion of a function.
+
+    Parameters:
+    - func: The function for which the Taylor series expansion is to be calculated.
+    - var: The variable of the function.
+    - point: The point around which the expansion is performed.
+    - n: The number of terms in the series.
+
+    Returns:
+    - The Taylor series expansion.
+    """
+    taylor_series = func.subs(var, point)
+    for i in range(1, n + 1):
+        derivative = func.diff(var, i)
+        taylor_series += (derivative.subs(var, point) / sp.factorial(i)) * (var - point)**i
+    return taylor_series
+
+# Example usage:
+# Define the function and the variable
+x = sp.symbols('x')
+func = sp.sin(x)
+
+# Point around which to expand
+a = 0
+
+# Number of terms in the series
+terms = 5
+
+# Calculate the Taylor series expansion
+taylor_expansion = taylor_series(func, x, a, terms)
+
+print(f"The Taylor series expansion of {func} around x={a} up to {terms} terms is:\n{taylor_expansion}")
