@@ -1,0 +1,33 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+def stresscost(d,t):
+    r2 = (d/2)/100
+    r1 = (d/2-t)/100
+    A = np.pi*r2**2 - np.pi*r1**2
+    V = A*H
+    M = V*p
+    
+    I = 0.5*M*(r2**2 + r1**2)
+    
+    max_stress = (np.pi*E*I)/(H**2 * d * t)
+    
+    stress = max_stress * 0.8
+    
+    W = M * 9.81
+    cost = 0.7*W + 0.9*d
+    
+    return stress, cost
+    
+E = 200E9
+H = 2.75
+p = 7800
+
+d = [1, 10]
+t = [0.1, 1]
+
+for i in range(len(d)):
+    for j in range(len(t)):
+        stress, cost = stresscost(d[i], t[j])
+        print('For d =', d[i], 'and t =', t[j],'the stress is',
+              stress, 'and the cost is', cost)
