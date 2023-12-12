@@ -1,0 +1,192 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Sat Dec  9 18:40:10 2023
+
+@author: lisan
+"""
+
+#2021 
+#Q1a
+import numpy as np
+n = [1, 2*12, 3*1500, 12*1500, 1500**2]
+roots = np.roots(n)
+print(roots)
+
+omega_r = np.real(roots)
+omega_j = np.imag(roots)
+
+print(omega_r)
+print()
+print(omega_j)
+
+#Q1b
+#Simpson's 3/8 rule - template
+def func(lower_limit, upper_limit, interval_limit ): 
+      
+    interval_size = (float(upper_limit - lower_limit) / interval_limit) 
+    sum = func(lower_limit) + func(upper_limit); 
+   
+    # Calculates value till integral limit 
+    for i in range(1, interval_limit ): 
+        if (i % 3 == 0): 
+            sum = sum + 2 * func(lower_limit + i * interval_size) 
+        else: 
+            sum = sum + 3 * func(lower_limit + i * interval_size) 
+      
+    return ((float( 3 * interval_size) / 8 ) * sum ) 
+  
+# driver function 
+interval_limit = 1000
+lower_limit = 0
+upper_limit = 1
+  
+#integral_res = func(lower_limit, upper_limit, interval_limit) 
+  
+# rounding the final answer to 6 decimal places  
+#print (round(integral_res, 6))
+
+ 
+
+#Q3a
+MAX_ITER = 1000000
+def func( x ): 
+    return (x**2+5*x-4) 
+  
+# Prints root of func(x) in interval [a, b] 
+def regulaFalsi( a , b): 
+    if func(a) * func(b) >= 0: 
+        print("You have not assumed right a and b") 
+        return -1 
+      
+    c = a # Initialize result 
+      
+    for i in range(MAX_ITER): 
+          
+        # Find the point that touches x axis 
+        c = (a * func(b) - b * func(a))/ (func(b) - func(a)) 
+          
+        # Check if the above found point is root 
+        if func(c) == 0: 
+            break
+          
+        # Decide the side to repeat the steps 
+        elif func(c) * func(a) < 0: 
+            b = c 
+        else: 
+            a = c 
+    print("The value of root is : " , '%.4f' %c) 
+    print(i)
+  
+# Driver code to test above function 
+# Initial values assumed 
+a = -5.7
+b = 1
+regulaFalsi(a, b) 
+
+ 
+
+
+#Q4a
+
+#Euler Method without solve_ivp
+# importing modules
+import numpy as np
+import matplotlib.pyplot as plt
+import math
+
+# ------------------------------------------------------
+# inputs
+
+# functions that returns dy/dx
+# i.e. the equation we want to solve: dy/dx = - y
+def model(y,t):
+    dy_dt = -10*y+(1-(-10))*(np.cos(t))-(1+(-10))*(np.sin(t))
+    return dy_dt
+
+# initial conditions
+t0 = 0
+y0 = 1
+#t_span thing 
+# total solution interval
+#x_final = np.linspace(0.0,2*np.pi, 300)
+x_final = 4*np.pi
+# step size
+h = np.pi / 100
+# ------------------------------------------------------
+ 
+# ------------------------------------------------------
+# Euler method
+
+# number of steps
+n_step = math.ceil(x_final/h)
+
+# Definition of arrays to store the solution
+y_eul = np.zeros(n_step+1)
+t_eul = np.zeros(n_step+1)
+
+# Initialize first element of solution arrays 
+# with initial condition
+y_eul[0] = y0
+t_eul[0] = t0  
+
+# Populate the x array
+for i in range(n_step):
+    t_eul[i+1]  = t_eul[i]  + h
+
+# Apply Euler method n_step times
+for i in range(n_step): 
+    # compute the slope using the differential equation
+    slope = model(y_eul[i],t_eul[i]) 
+    # use the Euler method
+    y_eul[i+1] = y_eul[i] + h * slope  
+# ------------------------------------------------------
+
+# ------------------------------------------------------
+
+# plot results
+plt.plot(t_eul, y_eul , 'b-')
+plt.xlabel('x')
+plt.ylabel('y(x)')
+plt.show()
+# ------------------------------------------------------
+
+def close_enough(v, w):
+    return abs(v - w) < 0.5 * h
+
+print('At t = 2pi, y =',y_eul[np.where(close_enough(t_eul, 2*np.pi))])
+print('At t = 4pi, y =',y_eul[np.where(close_enough(t_eul, 4*np.pi))])
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
